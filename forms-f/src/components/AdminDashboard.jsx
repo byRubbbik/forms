@@ -1,8 +1,11 @@
 import React, { useState } from "react";
+import Aside from "./Aside";
 
 
 const AdminDashboard = () => {
-    return <h1>Добро пожаловать, Администратор!</h1>;
+    return (
+        <Aside />
+    );
 };
 
 export default AdminDashboard;

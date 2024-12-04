@@ -1,5 +1,10 @@
 from abc import ABC, abstractmethod
 
+from fastapi.security import OAuth2PasswordBearer
+from passlib.context import CryptContext
+
+from core.config import settings
+
 
 class BaseCRUD(ABC):
     @abstractmethod
@@ -17,3 +22,12 @@ class BaseCRUD(ABC):
     @abstractmethod
     async def delete(cls):
         raise NotImplementedError("Subclasses must implement this method")
+
+
+
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
+
+SECRET_KEY = settings.auth.SECRET_KEY
+ALGORITHM = settings.auth.ALGORITM
+ACCESS_TOKEN_EXPIRE_MINUTES = settings.auth.ACCESS_TOKEN_EXPIRE_MINUTES

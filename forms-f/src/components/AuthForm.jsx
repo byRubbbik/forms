@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "./AuthForm.css";
-import logo from "./images/logo.png";
+import "../assets/styles/AuthForm.css";
+import logo from "../assets/images/logo.png";
 
 const AuthForm = () => {
     const [formData, setFormData] = useState({ username: "", password: "" });
@@ -31,8 +31,8 @@ const AuthForm = () => {
         e.preventDefault();
         const formErrors = validateForm(formData);
         if (Object.keys(formErrors).length > 0) {
-           setErrors(formErrors);
-           return;
+            setErrors(formErrors);
+            return;
         }
 
         try {
@@ -47,9 +47,9 @@ const AuthForm = () => {
                 setSuccessMessage("Вход выполнен успешно!");
                 console.log("Успешный вход:", result);
 
-                // Сохраняем токен и перенаправляем
+
                 localStorage.setItem("token", result.access_token);
-                navigate("/dashboard"); // Перенаправление на личный кабинет
+                navigate("/dashboard");
             } else {
                 const result = await response.json();
                 setErrors({ api: result.message || "Ошибка входа" });
@@ -67,12 +67,12 @@ const AuthForm = () => {
                         <h1>Авторизация</h1>
                         <span>или используйте свой аккаунт</span>
 
-                        <input 
+                        <input
                             type="text"
                             name="username"
                             value={formData.email}
                             onChange={handleChange}
-                            placeholder="Имя пользователя" 
+                            placeholder="Имя пользователя"
                         />
                         {errors.username && <span>{errors.username}</span>}
 
@@ -84,7 +84,7 @@ const AuthForm = () => {
                             placeholder="Пароль"
                         />
                         {errors.password && <span>{errors.password}</span>}
-                        
+
                         <a href="#">Забыли пароль?</a>
 
                         <button className="btn" type="submit">Вход</button>

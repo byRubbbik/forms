@@ -11,9 +11,3 @@ class UserCreate(BaseModel):
     username: str
     email: str
     password: str
-
-
-# class UserReadResponse(BaseModel):
-#     id: int
-#     username: str
-#     role: str
