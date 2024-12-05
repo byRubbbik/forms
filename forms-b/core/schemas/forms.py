@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 from typing import List, Optional
-
+from .auth import TokenResponse
 
 class Fields(BaseModel):
     id: int
@@ -10,8 +10,7 @@ class Fields(BaseModel):
     required: bool
 
 
-class Form(BaseModel):
+class CreateForm(BaseModel):
     title: str
     description: Optional[str] = None
     fields: List[Fields]
-    token: str

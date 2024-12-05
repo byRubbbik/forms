@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-from fastapi.security import OAuth2PasswordBearer
+from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from passlib.context import CryptContext
 
 from core.config import settings
@@ -26,7 +26,7 @@ class BaseCRUD(ABC):
 
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/v1/users/auth")
 
 SECRET_KEY = settings.auth.SECRET_KEY
 ALGORITHM = settings.auth.ALGORITM
