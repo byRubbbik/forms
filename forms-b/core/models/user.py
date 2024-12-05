@@ -1,4 +1,5 @@
 from sqlalchemy import Column, Integer, String
+from sqlalchemy.orm import relationship
 
 from .base import Base
 
@@ -11,6 +12,8 @@ class User(Base):
     email = Column(String(255), nullable=False)
     password = Column(String(128), nullable=False)
     role = Column(String(20), nullable=False)
+
+    forms = relationship("Form", back_populates="owner")
     
     def __repr__(self):
         return f"<User(id={self.id}, username={self.username}, role={self.role})>"

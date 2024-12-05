@@ -27,10 +27,10 @@ main_app.include_router(
 )
 main_app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173"],  # Или используйте "*" для разрешения всех доменов
+    allow_origins=["http://localhost:5173"],
     allow_credentials=True,
-    allow_methods=["*"],  # Разрешить все методы, включая POST
-    allow_headers=["*"],  # Разрешить все заголовки
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 
