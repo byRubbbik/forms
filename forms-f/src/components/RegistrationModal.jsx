@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import "../assets/styles/RegistrationModal.css";
 
 
-const RegistrationModal = ({ onClose }) => {
+const RegistrationModal = ({show, onClose }) => {
+  if (!show) return null;
   const [formData, setFormData] = useState({
     username: "",
     email: "",

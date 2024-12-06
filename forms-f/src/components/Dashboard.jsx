@@ -25,7 +25,7 @@ const Dashboard = () => {
         <>
             <div className="wrapper">
                 <div className="main">
-                    {decodedToken.role === "admin" ? <AdminDashboard /> : <UserDashboard />}
+                    {decodedToken.role === "Admin" ? <AdminDashboard /> : <UserDashboard />}
                 </div>
             </div>
         </>
