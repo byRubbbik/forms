@@ -12,15 +12,15 @@ const FormModal = ({ show, onClose }) => {
             {
                 id: 1,
                 type: "text",
-                label: "Your Name",
-                placeholder: "Enter your name",
+                label: "Ваше имя",
+                placeholder: "Введите имя",
                 required: true,
             },
             {
                 id: 2,
                 type: "email",
-                label: "Your Email",
-                placeholder: "Enter your email",
+                label: "Ваша электронная почта",
+                placeholder: "Введите свою электронную почту",
                 required: true,
             },
         ],
@@ -58,41 +58,67 @@ const FormModal = ({ show, onClose }) => {
         }));
     };
 
-    const handleSubmit = () => {
-        console.log("Form JSON:", form);
-        onClose();
+    const handleSubmit = async () => {
+        const token = localStorage.getItem("token");
+        if (!token) {
+            alert("Вы не авторизированы");
+            return;
+        }
+    
+        try {
+            const response = await fetch("http://0.0.0.0:8000/api/v1/forms", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                },
+                body: JSON.stringify(form),
+            });
+    
+            if (!response.ok) {
+                throw new Error(`Ошибка: ${response.status}`);
+            }
+    
+            const data = await response.json();
+            console.log("Форма успешно отправлена:", data);
+            alert("Форма успешно отправлена!");
+            onClose();
+        } catch (error) {
+            console.error("Ошибка отправки формы:", error);
+            alert("Ошибка отправки формы");
+        }
     };
-
+    
     return (
         <div className="modal-overlay">
             <div className="modal">
                 <button className="modal-close" onClick={onClose}>
                     &times;
                 </button>
-                <h2 className="modal-title">Create Survey</h2>
+                <h2 className="modal-title">Создать опрос</h2>
                 <form className="modal-form">
                     <div className="form-group">
-                        <label>Title:</label>
+                        <label>Заголовок:</label>
                         <input
                             type="text"
                             value={form.title}
                             onChange={(e) => handleInputChange("title", e.target.value)}
-                            placeholder="Enter survey title"
+                            placeholder="Введите заголовок"
                         />
                     </div>
                     <div className="form-group">
-                        <label>Description:</label>
+                        <label>Описание:</label>
                         <textarea
                             value={form.description}
                             onChange={(e) => handleInputChange("description", e.target.value)}
-                            placeholder="Enter survey description"
+                            placeholder="Введите описание"
                         ></textarea>
                     </div>
-                    <h3>Fields:</h3>
+                    <h3>Поля ввода:</h3>
                     {form.fields.map((field) => (
                         <div key={field.id} className="field-container">
                             <div className="form-group">
-                                <label>Type:</label>
+                                <label>Тип:</label>
                                 <select
                                     value={field.type}
                                     onChange={(e) =>
@@ -106,29 +132,29 @@ const FormModal = ({ show, onClose }) => {
                                 </select>
                             </div>
                             <div className="form-group">
-                                <label>Label:</label>
+                                <label>Этикетка:</label>
                                 <input
                                     type="text"
                                     value={field.label}
                                     onChange={(e) =>
                                         handleFieldChange(field.id, "label", e.target.value)
                                     }
-                                    placeholder="Field label"
+                                    placeholder="Этикетка поля"
                                 />
                             </div>
                             <div className="form-group">
-                                <label>Placeholder:</label>
+                                <label>Заполнитель:</label>
                                 <input
                                     type="text"
                                     value={field.placeholder}
                                     onChange={(e) =>
                                         handleFieldChange(field.id, "placeholder", e.target.value)
                                     }
-                                    placeholder="Field placeholder"
+                                    placeholder="Заполнитель поля"
                                 />
                             </div>
                             <div className="form-group">
-                                <label>Required:</label>
+                                <label>Необходимость ввода:</label>
                                 <input
                                     type="checkbox"
                                     checked={field.required}
@@ -144,14 +170,14 @@ const FormModal = ({ show, onClose }) => {
                         className="add-field-button"
                         onClick={addField}
                     >
-                        + Add Field
+                        + Добавить поле
                     </button>
                     <button
                         type="button"
                         className="submit-button"
                         onClick={handleSubmit}
                     >
-                        Submit
+                        Создать
                     </button>
                     <button
                         type="button"

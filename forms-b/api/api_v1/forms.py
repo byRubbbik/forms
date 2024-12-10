@@ -32,11 +32,12 @@ async def create_form(
     current_user: dict = Depends(get_current_user),
     session: AsyncSession = Depends(db_helper.session_getter)
 ):
+    fields_as_dict = [field.dict() for field in form.fields]
     new_form = await FormCRUD.create(
         session=session,
-        username=current_user.username,
+        username=current_user["username"],
         title=form.title,
         description=form.description,
-        fields=form.fields
+        fields=fields_as_dict
     )
     return new_form

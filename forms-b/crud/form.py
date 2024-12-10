@@ -18,6 +18,13 @@ class FormCRUD(BaseCRUD):
         """
         query = await session.execute(select(User).filter_by(username=username))
         user = query.scalar_one_or_none()
+        if not user:
+            raise ValueError("Пользователь не найден")
+
+        # Убедимся, что fields — это список словарей
+        if not isinstance(fields, list) or not all(isinstance(f, dict) for f in fields):
+            raise TypeError("Fields должны быть списком словарей (JSON).")
+
         new_form = Form(user_id=user.id, title=title, description=description, fields=fields)
         
         session.add(new_form)
@@ -25,7 +32,7 @@ class FormCRUD(BaseCRUD):
             await session.commit()
         except IntegrityError:
             await session.rollback()
-            raise ValueError
+            raise ValueError("Ошибка целостности данных")
         return new_form
 
     @classmethod
